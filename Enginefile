@@ -1,0 +1,10 @@
+name: 'java'
+version: '0.1.0'
+summary: 'Nanobox engine for generic Java deployments'
+language: 'java'
+stability: 'stable'
+license: 'MPL'
+generic: true
+
+authors:
+  - braxton@nanobox.io

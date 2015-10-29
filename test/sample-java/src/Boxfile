@@ -1,0 +1,12 @@
+build:
+  stability: alpha
+  runtime: sun-jdk7
+  engine: ../../../../nanobox-engine-java
+web1:
+  ports:
+    - 80:8080
+    - 443:8080
+  stability: alpha
+  exec: /data/java/sun-7/bin/java -XX:+UseCompressedOops -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
+postgresql1:
+  stability: alpha
