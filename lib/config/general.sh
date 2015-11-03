@@ -61,7 +61,7 @@ code_dir() {
 }
 
 runtime() {
-  echo $(validate "$(payload 'boxfile_runtime')" "string" "openjdk8")
+  echo $(validate "$(payload 'boxfile_runtime')" "string" "sun-jdk8")
 }
 
 condensed_runtime() {
