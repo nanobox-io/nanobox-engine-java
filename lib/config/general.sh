@@ -75,13 +75,13 @@ condensed_runtime() {
 
 java_home() {
   case "$(runtime)" in
-  sun-j[dk|re]8)
+  sun-j??8)
     echo "$(deploy_dir)/java/sun-8"
     ;;
-  sun-j[dk|re]7)
+  sun-j??7)
     echo "$(deploy_dir)/java/sun-7"
     ;;
-  sun-j[dk|re]6)
+  sun-j??6)
     echo "$(deploy_dir)/java/sun-6"
     ;;
   openjdk8)
