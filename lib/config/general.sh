@@ -9,10 +9,14 @@ create_boxfile() {
 }
 
 boxfile_payload() {
-    cat <<-END
+  _has_bower=$(has_bower)
+  if [[ "$_has_bower" = "true" ]]; then
+    print_bullet_sub "Adding lib_dirs for bower"
+  fi
+  cat <<-END
 {
   "java_home": "$(java_home)",
-  "has_bower": $(has_bower)
+  "has_bower": ${_has_bower}
 }
 END
 }
