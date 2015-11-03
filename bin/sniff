@@ -4,6 +4,6 @@
 
 # $1 = code_dir
 
-if [ ! -f ${1}/pom.xml ]
+if [ ! -f ${1}/pom.xml ]; then
   exit 1
 fi
