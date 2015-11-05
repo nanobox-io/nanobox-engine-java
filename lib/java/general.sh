@@ -42,7 +42,7 @@ java_env_dir() {
 }
 
 java_runtime() {
-  echo $(nos_validate "$(nos_payload 'boxfile_runtime')" "string" "sun-jdk8")
+  echo $(nos_validate "$(nos_payload 'boxfile_java_runtime')" "string" "sun-jdk8")
 }
 
 java_condensed_runtime() {
