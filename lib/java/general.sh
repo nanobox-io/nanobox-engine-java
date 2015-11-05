@@ -84,7 +84,7 @@ java_maven_version() {
 }
 
 java_maven_runtime() {
-  echo $(nos_validate "$(nos_payload 'boxfile_maven_runtime')" "string" "$(condensed_runtime)-maven$(maven_version)")
+  echo $(nos_validate "$(nos_payload 'boxfile_maven_runtime')" "string" "$(java_condensed_runtime)-maven$(java_maven_version)")
 }
 
 java_install_maven() {
