@@ -9,41 +9,41 @@
 nos_init $@
 
 # source common lib
-. ${engine_lib_dir}/common.sh
+. ${engine_lib_dir}/java.sh
 
-print_process_start "Installing packages"
+nos_print_process_start "Installing packages"
 
 # install sun*_java or openjdk*
-install_runtime
+java_install_runtime
 
 # install maven binary
-install_maven
+java_install_maven
 
 # install node.js for static assets
-install_js_runtime
+nodejs_install_runtime
 
 # install bower via npm if Bower.json is found
-install_bower
+nodejs_install_bower
 
 # persist all environment variables 
-persist_evars
+nos_persist_evars
 
 # create database_url environment variable
-create_database_url
+java_create_database_url
 
 # setup cache dir for maven
-maven_cache_dir
+java_maven_cache_dir
 
 # run maven install
-maven_install
+java_maven_install
 
 # run bower install if Bower.json is found
-bower_install
+nodejs_bower_install
 
 # set up auto link creation for console'd containers
-create_profile_links
+java_create_profile_links
 
 # persist the current node.js version in the cache
-set_js_runtime
+nodejs_set_runtime
 
 exit 0
