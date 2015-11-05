@@ -79,7 +79,7 @@ java_maven_default_version() {
 }
 
 java_maven_version() {
-  version="$(nos_validate "$(nos_payload "boxfile_maven_version")" "string" "$(maven_default_version)")"
+  version="$(nos_validate "$(nos_payload "boxfile_maven_version")" "string" "$(java_maven_default_version)")"
   echo ${version//./}
 }
 
