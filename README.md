@@ -2,7 +2,7 @@
 
 This is a generic Java engine used to launch [Nanobox](http://nanobox.io).
 
-***NOTE:** This engine is a work in progress. If you're interested in helping to complete this engine, answers to the questions in [this issue](https://github.com/nanobox-io/nanobox-engine-java/issues/5) would be great.*
+**NOTE:** *This engine is a work in progress. If you're interested in helping to complete this engine, answers to the questions in [this issue](https://github.com/nanobox-io/nanobox-engine-java/issues/5) would be great.*
 
 ## App Detection
 To detect a Java app, this engine checks for the presence of `pom.xml`.
