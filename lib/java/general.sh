@@ -10,15 +10,13 @@ java_create_boxfile() {
 
 java_boxfile_payload() {
   _has_bower=$(nodejs_has_bower)
-  _has_gradle=$(java_has_gradle)
   if [[ "$_has_bower" = "true" ]]; then
     nos_print_bullet_sub "Adding lib_dirs for bower"
   fi
   cat <<-END
 {
   "java_home": "$(java_home)",
-  "has_bower": ${_has_bower},
-  "has_gradle": ${_has_gradle}
+  "has_bower": ${_has_bower}
 }
 END
 }
@@ -90,33 +88,59 @@ java_maven_runtime() {
 }
 
 java_install_maven() {
-  nos_install "$(java_maven_runtime)"
+  [ -f $(nos_code_dir)/pom.xml ] && nos_install "$(java_maven_runtime)"
 }
 
 java_install_gradle() {
   if [ -f $(nos_code_dir)/build.gradle ]; then
-    apt-get update -qq && apt-get install unzip
+    nos_install "unzip"
     wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
     unzip -o /tmp/gradle.zip -d /tmp
     rsync -a /tmp/gradle-2.9/. /data/
   fi
 }
 
-java_has_gradle() {
-  [ -f $(nos_code_dir)/build.gradle ] && echo 'true' || echo 'false'
+java_gradle_build() {
+  [ -f $(nos_code_dir)/build.gradle ] && (cd $(nos_code_dir); nos_run_subprocess "gradle build" "/data/bin/gradle build")
 }
 
 java_maven_cache_dir() {
-  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_subprocess "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
-  [[ ! -s ${HOME}/.m2 ]] && nos_run_subprocess "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+  if [ -f $(nos_code_dir)/pom.xml ]; then
+    [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_subprocess "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
+    [[ ! -s ${HOME}/.m2 ]] && nos_run_subprocess "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+  fi
 }
 
 java_maven_install() {
-  (cd $(nos_code_dir); nos_run_subprocess "maven install" "mvn -B -DskipTests=true clean install")
+  [ -f $(nos_code_dir)/pom.xml ] && (cd $(nos_code_dir); nos_run_subprocess "maven install" "mvn -B -DskipTests=true clean install")
 }
 
 java_create_database_url() {
   if [[ -n "$(nos_payload 'env_POSTGRESQL1_HOST')" ]]; then
     nos_persist_evar "DATABASE_URL" "postgres://$(nos_payload 'env_POSTGRESQL1_USER'):$(nos_payload 'env_POSTGRESQL1_PASS')@$(nos_payload 'env_POSTGRESQL1_HOST'):$(nos_payload 'env_POSTGRESQL1_PORT')/$(nos_payload 'env_POSTGRESQL1_NAME')"
+  fi
+}
+
+java_before() {
+  if (nos_validate_presence 'boxfile_before_exec' &> /dev/null) ; then
+    nos_run_hooks "before"
+  else
+    java_install_maven  && return 0
+    java_install_gradle && return 0
+  fi
+}
+
+java_exec() {
+  if (nos_validate_presence 'boxfile_exec' &> /dev/null) ; then
+    nos_run_hooks "exec"
+  else
+    java_maven_cache_dir && java_maven_install && return 0
+    java_gradle_build    && return 0
+  fi
+}
+
+java_after() {
+  if (nos_validate_presence 'boxfile_after_exec' &> /dev/null) ; then
+    nos_run_hooks "after"
   fi
 }
