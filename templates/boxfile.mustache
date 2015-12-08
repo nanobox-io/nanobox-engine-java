@@ -10,3 +10,6 @@ build:
     - node_modules
     - bower_components
 {{/has_bower}}
+{{#has_gradle}}
+  exec: /data/bin/gradle build
+{{/has_gradle}}

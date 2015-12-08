@@ -19,6 +19,9 @@ java_install_runtime
 # install maven binary
 java_install_maven
 
+# install gradle binary
+java_install_gradle
+
 # install node.js for static assets
 nodejs_install_runtime
 

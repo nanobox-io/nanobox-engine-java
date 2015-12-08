@@ -10,6 +10,7 @@ java_create_boxfile() {
 
 java_boxfile_payload() {
   _has_bower=$(nodejs_has_bower)
+  _has_gradle=$(java_has_gradle)
   if [[ "$_has_bower" = "true" ]]; then
     nos_print_bullet_sub "Adding lib_dirs for bower"
   fi
@@ -17,6 +18,7 @@ java_boxfile_payload() {
 {
   "java_home": "$(java_home)",
   "has_bower": ${_has_bower}
+  "has_gradle": ${_has_gradle}
 }
 END
 }
@@ -89,6 +91,17 @@ java_maven_runtime() {
 
 java_install_maven() {
   nos_install "$(java_maven_runtime)"
+}
+
+java_install_gradle() {
+  if [ -f ${1}/build.gradle ]; then
+    wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
+    unzip -o /tmp/gradle.zip -d /tmp
+    rsync -a /tmp/gradle-2.9/. /data/
+}
+
+java_has_gradle() {
+  [ -f ${1}/build.gradle ] && echo 'true' || echo 'false'
 }
 
 java_maven_cache_dir() {
