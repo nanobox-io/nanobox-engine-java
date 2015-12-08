@@ -17,7 +17,7 @@ java_boxfile_payload() {
   cat <<-END
 {
   "java_home": "$(java_home)",
-  "has_bower": ${_has_bower}
+  "has_bower": ${_has_bower},
   "has_gradle": ${_has_gradle}
 }
 END
@@ -94,14 +94,16 @@ java_install_maven() {
 }
 
 java_install_gradle() {
-  if [ -f ${1}/build.gradle ]; then
+  if [ -f $(nos_code_dir)/build.gradle ]; then
+    apt-get update -qq && apt-get install unzip
     wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
     unzip -o /tmp/gradle.zip -d /tmp
     rsync -a /tmp/gradle-2.9/. /data/
+  fi
 }
 
 java_has_gradle() {
-  [ -f ${1}/build.gradle ] && echo 'true' || echo 'false'
+  [ -f $(nos_code_dir)/build.gradle ] && echo 'true' || echo 'false'
 }
 
 java_maven_cache_dir() {
