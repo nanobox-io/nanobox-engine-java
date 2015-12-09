@@ -10,12 +10,16 @@ java_create_boxfile() {
 
 java_boxfile_payload() {
   _has_bower=$(nodejs_has_bower)
+  _has_maven=$(java_has_maven)
+  _has_gradle=$(java_has_gradle)
   if [[ "$_has_bower" = "true" ]]; then
     nos_print_bullet_sub "Adding lib_dirs for bower"
   fi
   cat <<-END
 {
   "java_home": "$(java_home)",
+  "has_maven": ${_has_maven},
+  "has_gradle": ${_has_gradle},
   "has_bower": ${_has_bower}
 }
 END
@@ -98,6 +102,14 @@ java_install_gradle() {
     unzip -o /tmp/gradle.zip -d /tmp
     rsync -a /tmp/gradle-2.9/. /data/
   fi
+}
+
+java_has_gradle() {
+  [ -f $(nos_code_dir)/build.gradle ] && echo 'true' || echo 'false'
+}
+
+java_has_maven() {
+  [ -f $(nos_code_dir)/pom.xml ] && echo 'true' || echo 'false'
 }
 
 java_gradle_build() {
