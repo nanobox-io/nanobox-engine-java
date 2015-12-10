@@ -99,7 +99,7 @@ java_install_gradle() {
   if [ -f $(nos_code_dir)/build.gradle ]; then
     nos_install "unzip"
     wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
-    unzip -o /tmp/gradle.zip -d /tmp
+    unzip -qo /tmp/gradle.zip -d /tmp
     rsync -a /tmp/gradle-2.9/. /data/
   fi
 }
