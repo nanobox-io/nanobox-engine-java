@@ -16,6 +16,9 @@ nos_print_process_start "Installing packages"
 # install sun*_java or openjdk*
 java_install_runtime
 
+# install build tool (maven, gradle)
+java_prepare
+
 # install node.js for static assets
 nodejs_install_runtime
 

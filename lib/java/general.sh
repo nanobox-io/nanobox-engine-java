@@ -92,10 +92,13 @@ java_maven_runtime() {
 }
 
 java_install_maven() {
-  [ -f $(nos_code_dir)/pom.xml ] && nos_install "$(java_maven_runtime)"
+  # check if they installed maven in their prepare hook
+  [ -f $(nos_code_dir)/pom.xml ] && ( which maven || nos_install "$(java_maven_runtime)" )
 }
 
 java_install_gradle() {
+  # check if they installed gradle in their prepare hook
+  which gradle && return 0
   if [ -f $(nos_code_dir)/build.gradle ]; then
     nos_install "unzip"
     wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
@@ -133,26 +136,16 @@ java_create_database_url() {
   fi
 }
 
-java_before() {
-  if (nos_validate_presence 'boxfile_before_exec' &> /dev/null) ; then
-    nos_run_hooks "before"
-  else
-    java_install_maven  && return 0
-    java_install_gradle && return 0
-  fi
+java_prepare() {
+  java_install_maven  && java_maven_cache_dir && return 0
+  java_install_gradle && return 0
 }
 
 java_exec() {
   if (nos_validate_presence 'boxfile_exec' &> /dev/null) ; then
     nos_run_hooks "exec"
   else
-    java_maven_cache_dir && java_maven_install && return 0
-    java_gradle_build    && return 0
-  fi
-}
-
-java_after() {
-  if (nos_validate_presence 'boxfile_after_exec' &> /dev/null) ; then
-    nos_run_hooks "after"
+    java_maven_install && return 0
+    java_gradle_build  && return 0
   fi
 }
