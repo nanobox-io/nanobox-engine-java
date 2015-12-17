@@ -11,14 +11,8 @@ nos_init "$@"
 # source common lib
 . ${engine_lib_dir}/java.sh
 
-# run Boxfile hooks defined in the "before" node
-nos_run_hooks "before"
-
 # run Boxfile hooks defined in the "exec" node
-nos_run_hooks "exec"
-
-# run Boxfile hooks defined in the "after" node
-nos_run_hooks "after"
+java_exec
 
 # copy the source code into the live directory
 nos_print_bullet "Copying release into live code directory..."

@@ -5,7 +5,9 @@ env:
 build:
   lib_dirs:
     - target
+{{#has_maven}}
     - .m2
+{{/has_maven}}
 {{#has_bower}}
     - node_modules
     - bower_components

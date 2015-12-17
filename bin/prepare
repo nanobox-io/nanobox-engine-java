@@ -16,8 +16,8 @@ nos_print_process_start "Installing packages"
 # install sun*_java or openjdk*
 java_install_runtime
 
-# install maven binary
-java_install_maven
+# install build tool (maven, gradle)
+java_prepare
 
 # install node.js for static assets
 nodejs_install_runtime
@@ -30,12 +30,6 @@ nos_persist_evars
 
 # create database_url environment variable
 java_create_database_url
-
-# setup cache dir for maven
-java_maven_cache_dir
-
-# run maven install
-java_maven_install
 
 # run bower install if Bower.json is found
 nodejs_bower_install

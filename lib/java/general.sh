@@ -10,12 +10,16 @@ java_create_boxfile() {
 
 java_boxfile_payload() {
   _has_bower=$(nodejs_has_bower)
+  _has_maven=$(java_has_maven)
+  _has_gradle=$(java_has_gradle)
   if [[ "$_has_bower" = "true" ]]; then
     nos_print_bullet_sub "Adding lib_dirs for bower"
   fi
   cat <<-END
 {
   "java_home": "$(java_home)",
+  "has_maven": ${_has_maven},
+  "has_gradle": ${_has_gradle},
   "has_bower": ${_has_bower}
 }
 END
@@ -88,20 +92,60 @@ java_maven_runtime() {
 }
 
 java_install_maven() {
-  nos_install "$(java_maven_runtime)"
+  # check if they installed maven in their prepare hook
+  [ -f $(nos_code_dir)/pom.xml ] && ( which maven || nos_install "$(java_maven_runtime)" )
+}
+
+java_install_gradle() {
+  # check if they installed gradle in their prepare hook
+  which gradle && return 0
+  if [ -f $(nos_code_dir)/build.gradle ]; then
+    nos_install "unzip"
+    wget -qO /tmp/gradle.zip https://downloads.gradle.org/distributions/gradle-2.9-bin.zip
+    unzip -qo /tmp/gradle.zip -d /tmp
+    rsync -a /tmp/gradle-2.9/. /data/
+  fi
+}
+
+java_has_gradle() {
+  [ -f $(nos_code_dir)/build.gradle ] && echo 'true' || echo 'false'
+}
+
+java_has_maven() {
+  [ -f $(nos_code_dir)/pom.xml ] && echo 'true' || echo 'false'
+}
+
+java_gradle_build() {
+  [ -f $(nos_code_dir)/build.gradle ] && (cd $(nos_code_dir); nos_run_subprocess "gradle build" "/data/bin/gradle build")
 }
 
 java_maven_cache_dir() {
-  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_subprocess "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
-  [[ ! -s ${HOME}/.m2 ]] && nos_run_subprocess "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+  if [ -f $(nos_code_dir)/pom.xml ]; then
+    [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_subprocess "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
+    [[ ! -s ${HOME}/.m2 ]] && nos_run_subprocess "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+  fi
 }
 
 java_maven_install() {
-  (cd $(nos_code_dir); nos_run_subprocess "maven install" "mvn -B -DskipTests=true clean install")
+  [ -f $(nos_code_dir)/pom.xml ] && (cd $(nos_code_dir); nos_run_subprocess "maven install" "mvn -B -DskipTests=true clean install")
 }
 
 java_create_database_url() {
   if [[ -n "$(nos_payload 'env_POSTGRESQL1_HOST')" ]]; then
     nos_persist_evar "DATABASE_URL" "postgres://$(nos_payload 'env_POSTGRESQL1_USER'):$(nos_payload 'env_POSTGRESQL1_PASS')@$(nos_payload 'env_POSTGRESQL1_HOST'):$(nos_payload 'env_POSTGRESQL1_PORT')/$(nos_payload 'env_POSTGRESQL1_NAME')"
+  fi
+}
+
+java_prepare() {
+  java_install_maven  && java_maven_cache_dir && return 0
+  java_install_gradle && return 0
+}
+
+java_exec() {
+  if (nos_validate_presence 'boxfile_exec' &> /dev/null) ; then
+    nos_run_hooks "exec"
+  else
+    java_maven_install && return 0
+    java_gradle_build  && return 0
   fi
 }
