@@ -3,7 +3,7 @@
 # vim: ts=2 sw=2 ft=bash noet
 
 # source the Nos framework
-. /opt/nos/common.sh
+. /opt/nanobox/nos/common.sh
 
 # initialize Nos with the original arguments
 nos_init "$@"
@@ -14,36 +14,24 @@ nos_init "$@"
 nos_print_process_start "Installing packages"
 
 # install sun*_java or openjdk*
-java_install_runtime
+install_runtime
 
 # install maven binary
-java_install_maven
-
-# install node.js for static assets
-nodejs_install_runtime
-
-# install bower via npm if Bower.json is found
-nodejs_install_bower
+install_maven
 
 # persist all environment variables 
-nos_persist_evars
+# nos_persist_evars
 
 # create database_url environment variable
-java_create_database_url
+create_database_url
 
 # setup cache dir for maven
-java_maven_cache_dir
+maven_cache_dir
 
 # run maven install
-java_maven_install
-
-# run bower install if Bower.json is found
-nodejs_bower_install
+maven_install
 
 # set up auto link creation for console'd containers
-java_create_profile_links
-
-# persist the current node.js version in the cache
-nodejs_set_runtime
+create_profile_links
 
 exit 0

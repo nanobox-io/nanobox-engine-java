@@ -11,16 +11,7 @@ nos_init "$@"
 # source common lib
 . ${engine_lib_dir}/java.sh
 
-# dynamically generate a Boxfile from a template,
-# and print to stdout
+# copy the release into the live code directory
+publish_release
 
-cat <<-END
-env:
-  JAVA_HOME: $(java_home)
-  JAVA_OPTS: "-XX:+UseCompressedOops"
-  PORT: 8080
-code.build:
-  lib_dirs:
-    - target
-    - .m2
-END
+exit 0

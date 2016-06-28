@@ -1,106 +1,92 @@
 # -*- mode: bash; tab-width: 2; -*-
 # vim: ts=2 sw=2 ft=bash noet
 
-java_create_boxfile() {
-  nos_template \
-    "boxfile.mustache" \
-    "-" \
-    "$(java_boxfile_payload)"
-}
-
-java_boxfile_payload() {
-  _has_bower=$(nodejs_has_bower)
-  if [[ "$_has_bower" = "true" ]]; then
-    nos_print_bullet_sub "Adding lib_dirs for bower"
-  fi
-  cat <<-END
-{
-  "java_home": "$(java_home)",
-  "has_bower": ${_has_bower}
-}
-END
-}
-
-java_create_profile_links() {
+create_profile_links() {
   mkdir -p $(nos_etc_dir)/profile.d/
   nos_template \
     "links.sh.mustache" \
     "$(nos_etc_dir)/profile.d/links.sh" \
-    "$(java_links_payload)"
+    "$(links_payload)"
 }
 
-java_links_payload() {
+links_payload() {
   cat <<-END
 {
-  "live_dir": "$(nos_live_dir)"
+  "code_dir": "$(nos_code_dir)"
 }
 END
 }
 
-java_env_dir() {
+env_dir() {
   echo $(nos_payload 'env_dir')
 }
 
-java_runtime() {
-  echo $(nos_validate "$(nos_payload 'boxfile_java_runtime')" "string" "sun-jdk8")
+runtime() {
+  echo $(nos_validate "$(nos_payload 'config_runtime')" "string" "oracle-jdk8")
 }
 
-java_condensed_runtime() {
-  java_runtime="$(java_runtime)"
-  echo ${java_runtime//[.-]/}
+condensed_runtime() {
+  runtime="$(runtime)"
+  echo ${runtime//[.-]/}
 }
 
 java_home() {
-  case "$(java_runtime)" in
-  sun-j??8)
-    echo "$(nos_deploy_dir)/java/sun-8"
+  case "$(runtime)" in
+  oracle-j??8)
+    echo "$(nos_data_dir)/java/oracle-8"
     ;;
   sun-j??7)
-    echo "$(nos_deploy_dir)/java/sun-7"
+    echo "$(nos_data_dir)/java/sun-7"
     ;;
   sun-j??6)
-    echo "$(nos_deploy_dir)/java/sun-6"
+    echo "$(nos_data_dir)/java/sun-6"
     ;;
   openjdk8)
-    echo "$(nos_deploy_dir)/java/openjdk8"
+    echo "$(nos_data_dir)/java/openjdk8"
     ;;
   openjdk7)
-    echo "$(nos_deploy_dir)/java/openjdk7"
+    echo "$(nos_data_dir)/java/openjdk7"
     ;;
   esac
 }
 
-java_install_runtime() {
-  nos_install "$(java_runtime)"
+install_runtime() {
+  nos_install "$(runtime)"
 }
 
-java_maven_default_version() {
-  [[ "$(java_runtime)" = 'sun-jdk6' ]] && echo '3.2' || echo '3.3'
+maven_default_version() {
+  [[ "$(runtime)" = 'sun-jdk6' ]] && echo '3.2' || echo '3.3'
 }
 
-java_maven_version() {
-  version="$(nos_validate "$(nos_payload "boxfile_maven_version")" "string" "$(java_maven_default_version)")"
+maven_version() {
+  version="$(nos_validate "$(nos_payload "config_maven_version")" "string" "$(maven_default_version)")"
   echo ${version//./}
 }
 
-java_maven_runtime() {
-  echo $(nos_validate "$(nos_payload 'boxfile_maven_runtime')" "string" "$(java_condensed_runtime)-maven$(java_maven_version)")
+maven_runtime() {
+  echo $(nos_validate "$(nos_payload 'config_maven_runtime')" "string" "$(condensed_runtime)-maven$(maven_version)")
 }
 
-java_install_maven() {
-  nos_install "$(java_maven_runtime)"
+install_maven() {
+  nos_install "$(maven_runtime)"
 }
 
-java_maven_cache_dir() {
-  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_subprocess "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
-  [[ ! -s ${HOME}/.m2 ]] && nos_run_subprocess "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+maven_cache_dir() {
+  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_process "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
+  [[ ! -s ${HOME}/.m2 ]] && nos_run_process "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
 }
 
-java_maven_install() {
-  (cd $(nos_code_dir); nos_run_subprocess "maven install" "mvn -B -DskipTests=true clean install")
+maven_install() {
+  (cd $(nos_code_dir); nos_run_process "maven install" "mvn -B -DskipTests=true clean install")
 }
 
-java_create_database_url() {
+# Copy the code into the live directory which will be used to run the app
+publish_release() {
+  nos_print_bullet "Moving build into live code directory..."
+  rsync -a $(nos_code_dir)/ $(nos_app_dir)
+}
+
+create_database_url() {
   if [[ -n "$(nos_payload 'env_POSTGRESQL1_HOST')" ]]; then
     nos_persist_evar "DATABASE_URL" "postgres://$(nos_payload 'env_POSTGRESQL1_USER'):$(nos_payload 'env_POSTGRESQL1_PASS')@$(nos_payload 'env_POSTGRESQL1_HOST'):$(nos_payload 'env_POSTGRESQL1_PORT')/$(nos_payload 'env_POSTGRESQL1_NAME')"
   fi
