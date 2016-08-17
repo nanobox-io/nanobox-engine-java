@@ -23,9 +23,13 @@ code.build:
     runtime: openjdk8
 ```
 
+##### Quick Links
+[Java Runtime Settings](#java-runtime-settings)  
+[Node.js Runtime Settings](#node-js-runtime-settings)
+
 ---
 
-### Java Settings
+### Java Runtime Settings
 The following setting allows you to define your Java runtime environment.
 
 ---
@@ -44,6 +48,22 @@ Specifies which Java runtime and version to use. The following runtimes are avai
 code.build:
   config:
     runtime: openjdk8
+```
+
+---
+
+### Node.js Runtime Settings
+Many applications utilize Javascript tools in some way. This engine allows you to specify which Node.js runtime you'd like to use.
+
+---
+
+#### nodejs_runtime
+Specifies which Node.js runtime and version to use. This engine overlays the Node.js engine. You can view the available Node.js runtimes in the [Node.js engine documentation](https://github.com/nanobox-io/nanobox-engine-nodejs#runtime).
+
+```yaml
+code.build:
+  config:
+    nodejs_runtime: 'nodejs-4.4'
 ```
 
 ---
