@@ -24,20 +24,24 @@ This engine exposes configuration options through the [boxfile.yml](http://docs.
 ```yaml
 code.build:
   config:
-    # Java Runtime Settings
+    # Java Settings
     runtime: openjdk8
 
-    # Node.js Runtime Settings
+    # Maven Settings
+    maven_version: 3.3
+
+    # Node.js Settings
     nodejs_runtime: nodejs-4.4
 ```
 
 ##### Quick Links
-[Java Runtime Settings](#java-runtime-settings)  
-[Node.js Runtime Settings](#node-js-runtime-settings)
+[Java Settings](#java-settings)  
+[Maven Settings](#maven-settings)  
+[Node.js Settings](#node-js-settings)
 
 ---
 
-### Java Runtime Settings
+### Java Settings
 The following setting allows you to define your Java runtime environment.
 
 ---
@@ -60,13 +64,46 @@ code.build:
 
 ---
 
-### Node.js Runtime Settings
+### Maven Settings
+The following setting allows you to configure Maven to your specific needs.
+
+---
+
+#### maven_version
+Defines which version of Maven to use. Available versions depend on which version of Java you're using.
+
+##### Java 6
+- 3.0
+- 3.1
+- 3.2
+
+##### Java 7
+- 3.0
+- 3.1
+- 3.2
+- 3.3
+
+#### Java 8
+- 3.0
+- 3.1
+- 3.2
+- 3.3
+
+```yaml
+code.build:
+  config:
+    maven_version: 3.3
+```
+
+---
+
+### Node.js Settings
 Many applications utilize Javascript tools in some way. This engine allows you to specify which Node.js runtime you'd like to use.
 
 ---
 
 #### nodejs_runtime
-Specifies which Node.js runtime and version to use. This engine overlays the Node.js engine. You can view the available Node.js runtimes in the [Node.js engine documentation](https://github.com/nanobox-io/nanobox-engine-nodejs#runtime).
+Specifies which Node.js runtime and version to use. You can view the available Node.js runtimes in the [Node.js engine documentation](https://github.com/nanobox-io/nanobox-engine-nodejs#runtime).
 
 ```yaml
 code.build:
@@ -77,4 +114,4 @@ code.build:
 ---
 
 ## Help & Support
-This is a generic (non-framework-specific) Java engine provided by [Nanobox](http://nanobox.io). If you need help with this engine, you can reach out to us in the [#nanobox IRC channel](http://webchat.freenode.net/?channels=nanobox). If you are running into an issue with the engine, feel free to [create a new issue on this project](https://github.com/nanobox-io/nanobox-engine-java/issues/new).
+This is a Java engine provided by [Nanobox](http://nanobox.io). If you need help with this engine, you can reach out to us in the [#nanobox IRC channel](http://webchat.freenode.net/?channels=nanobox). If you are running into an issue with the engine, feel free to [create a new issue on this project](https://github.com/nanobox-io/nanobox-engine-java/issues/new).
