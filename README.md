@@ -3,12 +3,17 @@
 This is a Java engine used to launch Java apps on [Nanobox](http://nanobox.io).
 
 ## Usage
-To use the Java engine, specify `java` as your `engine` in your boxfile.yml
+To use the Java engine, specify `java` as your `engine` in your boxfile.yml.
 
 ```yaml
 code.build:
   engine: java
 ```
+
+## Build Process
+When [running a build](https://docs.nanboox.io/cli/build/), this engine compiles code by doing the following:
+
+- `mvn -B -DskipTests=true clean install`
 
 ## Basic Configuration Options
 This engine exposes configuration options through the [boxfile.yml](http://docs.nanobox.io/app-config/boxfile/), a yaml config file used to provision and configure your app's infrastructure when using Nanobox.
