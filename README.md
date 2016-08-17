@@ -19,8 +19,11 @@ This engine exposes configuration options through the [boxfile.yml](http://docs.
 ```yaml
 code.build:
   config:
-    # Java Settings
+    # Java Runtime Settings
     runtime: openjdk8
+
+    # Node.js Runtime Settings
+    nodejs_runtime: nodejs-4.4
 ```
 
 ##### Quick Links
@@ -63,7 +66,7 @@ Specifies which Node.js runtime and version to use. This engine overlays the Nod
 ```yaml
 code.build:
   config:
-    nodejs_runtime: 'nodejs-4.4'
+    nodejs_runtime: nodejs-4.4
 ```
 
 ---
