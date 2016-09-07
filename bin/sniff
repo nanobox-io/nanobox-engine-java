@@ -1,9 +1,0 @@
-#!/bin/bash
-# -*- mode: bash; tab-width: 2; -*-
-# vim: ts=2 sw=2 ft=bash noet
-
-# $1 = code_dir
-
-if [ ! -f ${1}/pom.xml ]; then
-  exit 1
-fi
