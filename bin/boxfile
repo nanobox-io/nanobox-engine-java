@@ -19,8 +19,4 @@ env:
   JAVA_HOME: $(java_home)
   JAVA_OPTS: "-XX:+UseCompressedOops"
   PORT: 8080
-code.build:
-  lib_dirs:
-    - target
-    - .m2
 END

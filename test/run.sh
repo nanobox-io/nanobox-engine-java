@@ -55,7 +55,7 @@ docker run \
   --volume=/home/vagrant/ssh:/home/gonano/.ssh \
   --volume=/tmp/cache:/tmp/cache \
   --volume=/tmp/pkgsrc:/data/var/db/pkgin/cache \
-  nanobox/build:v1 \
+  nanobox/build \
   /test/util/bats/bin/bats \
     /test/tests/${file} \
       2>&1 \
