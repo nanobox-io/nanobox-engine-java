@@ -11,3 +11,4 @@ nos_init "$@"
 # source common lib
 . ${engine_lib_dir}/java.sh
 
+maven_install
