@@ -27,7 +27,7 @@ setup() {
   prepare_environment
 
   # prepare pkgsrc
-  run prepare_pkgsrc
+  prepare_pkgsrc
 
   # create the code_dir
   mkdir -p /tmp/code
