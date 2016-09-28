@@ -55,7 +55,7 @@ run() {
   set +e
   set +E
   set +T
-  output="$("$@" 2>&1)"
+  output="$(stdbuf -o0 "$@" 2>&1 | tee -a /var/log/out/output.log)"
   status="$?"
   IFS=$'\n' lines=($output)
   [ -z "$e" ] || set -e

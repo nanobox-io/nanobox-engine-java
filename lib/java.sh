@@ -7,15 +7,15 @@
 create_profile_links() {
   mkdir -p $(nos_etc_dir)/profile.d/
   nos_template \
-    "links.sh.mustache" \
-    "$(nos_etc_dir)/profile.d/links.sh" \
+    "profile.d/java.sh" \
+    "$(nos_etc_dir)/profile.d/java.sh" \
     "$(links_payload)"
 }
 
 links_payload() {
   cat <<-END
 {
-  "code_dir": "$(nos_code_dir)"
+  "data_dir": "$(nos_data_dir)"
 }
 END
 }
@@ -97,12 +97,16 @@ install_maven() {
 }
 
 maven_cache_dir() {
-  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_process "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
-  [[ ! -s ${HOME}/.m2 ]] && nos_run_process "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
+  [[ ! -f $(nos_data_dir)/var/m2 ]] && nos_run_process "make maven cache dir" "mkdir -p $(nos_data_dir)/var/m2"
+  [[ ! -s ${HOME}/.m2 ]] && nos_run_process "link maven cache dir" "ln -s $(nos_data_dir)/var/m2 ${HOME}/.m2"
+}
+
+maven_process_resources() {
+  (cd $(nos_code_dir); nos_run_process "maven process-resources" "mvn -T 4.0C -B -DskipTests=true clean process-resources")
 }
 
 maven_install() {
-  (cd $(nos_code_dir); nos_run_process "maven install" "mvn -B -DskipTests=true clean install")
+  (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
 }
 
 # Copy the code into the live directory which will be used to run the app
@@ -114,5 +118,17 @@ publish_release() {
 create_database_url() {
   if [[ -n "$(nos_payload 'env_POSTGRESQL1_HOST')" ]]; then
     nos_persist_evar "DATABASE_URL" "postgres://$(nos_payload 'env_POSTGRESQL1_USER'):$(nos_payload 'env_POSTGRESQL1_PASS')@$(nos_payload 'env_POSTGRESQL1_HOST'):$(nos_payload 'env_POSTGRESQL1_PORT')/$(nos_payload 'env_POSTGRESQL1_NAME')"
+  fi
+}
+
+copy_cached_files() {
+  if [ -d $(nos_cache_dir)/m2 ]; then
+    rsync -a $(nos_cache_dir)/m2/ $(nos_data_dir)/var/m2
+  fi
+}
+
+save_cached_files() {
+  if [ -d $(nos_data_dir)/var/m2 ]; then
+    rsync -a --delete $(nos_data_dir)/var/m2/ $(nos_cache_dir)/m2
   fi
 }
