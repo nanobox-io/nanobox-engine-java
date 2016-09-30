@@ -15,6 +15,9 @@ nos_init "$@"
 # and print to stdout
 
 cat <<-END
+code.build:
+  lib_dirs:
+    - .m2
 env:
   JAVA_HOME: $(java_home)
   JAVA_OPTS: "-XX:+UseCompressedOops"
