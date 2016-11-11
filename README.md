@@ -6,7 +6,7 @@ This is a Java engine used to launch Java apps on [Nanobox](http://nanobox.io).
 To use the Java engine, specify `java` as your `engine` in your boxfile.yml.
 
 ```yaml
-code.build:
+run.config:
   engine: java
 ```
 
@@ -22,8 +22,8 @@ This engine exposes configuration options through the [boxfile.yml](http://docs.
 #### Overview of Basic Boxfile Configuration Options
 
 ```yaml
-code.build:
-  config:
+run.config:
+  engine.config:
     # Java Settings
     runtime: openjdk8
 
@@ -57,8 +57,8 @@ Specifies which Java runtime and version to use. The following runtimes are avai
 - sun-jdk8
 
 ```yaml
-code.build:
-  config:
+run.config:
+  engine.config:
     runtime: openjdk8
 ```
 
@@ -90,8 +90,8 @@ Defines which version of Maven to use. Available versions depend on which versio
 - 3.3
 
 ```yaml
-code.build:
-  config:
+run.config:
+  engine.config:
     maven_version: 3.3
 ```
 
@@ -106,8 +106,8 @@ Many applications utilize Javascript tools in some way. This engine allows you t
 Specifies which Node.js runtime and version to use. You can view the available Node.js runtimes in the [Node.js engine documentation](https://github.com/nanobox-io/nanobox-engine-nodejs#runtime).
 
 ```yaml
-code.build:
-  config:
+run.config:
+  engine.config:
     nodejs_runtime: nodejs-4.4
 ```
 

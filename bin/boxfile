@@ -15,7 +15,7 @@ nos_init "$@"
 # and print to stdout
 
 cat <<-END
-code.build:
+run.config:
   lib_dirs:
     - .m2
 env:
