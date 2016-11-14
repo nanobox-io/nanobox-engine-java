@@ -16,7 +16,7 @@ nos_init "$@"
 
 cat <<-END
 run.config:
-  lib_dirs:
+  cache_dirs:
     - .m2
 env:
   JAVA_HOME: $(java_home)
