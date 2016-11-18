@@ -25,14 +25,7 @@ install_maven
 # create database_url environment variable
 create_database_url
 
-# setup cache dir for maven
-maven_cache_dir
-
-copy_cached_files
-
 # run maven process resources
 maven_process_resources
-
-save_cached_files
 
 exit 0
