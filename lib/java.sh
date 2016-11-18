@@ -1,22 +1,6 @@
 # -*- mode: bash; tab-width: 2; -*-
 # vim: ts=2 sw=2 ft=bash noet
 
-create_profile_links() {
-  mkdir -p $(nos_etc_dir)/profile.d/
-  nos_template \
-    "profile.d/java.sh" \
-    "$(nos_etc_dir)/profile.d/java.sh" \
-    "$(links_payload)"
-}
-
-links_payload() {
-  cat <<-END
-{
-  "code_dir": "$(nos_code_dir)"
-}
-END
-}
-
 env_dir() {
   echo $(nos_payload 'env_dir')
 }
@@ -82,11 +66,6 @@ maven_runtime() {
 
 install_maven() {
   nos_install "$(maven_runtime)"
-}
-
-maven_cache_dir() {
-  [[ ! -f $(nos_code_dir)/.m2 ]] && nos_run_process "make maven cache dir" "mkdir -p $(nos_code_dir)/.m2"
-  [[ ! -s ${HOME}/.m2 ]] && nos_run_process "link maven cache dir" "ln -s $(nos_code_dir)/.m2 ${HOME}/.m2"
 }
 
 maven_process_resources() {

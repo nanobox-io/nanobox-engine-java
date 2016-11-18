@@ -35,7 +35,4 @@ maven_process_resources
 
 save_cached_files
 
-# set up auto link creation for console'd containers
-create_profile_links
-
 exit 0
