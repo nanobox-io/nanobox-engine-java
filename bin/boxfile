@@ -13,7 +13,13 @@ nos_init "$@"
 
 # dynamically generate a Boxfile from a template,
 # and print to stdout
-
+if [[ $(grep -c build_triggers /opt/nanobox/hooks/lib/boxfile.rb) -gt 1 ]]; then
+	cat <<-END
+	run.config:
+	  build_triggers:
+	    - pom.xml
+	END
+fi
 cat <<-END
 env:
   JAVA_HOME: $(java_home)
