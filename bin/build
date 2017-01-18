@@ -25,9 +25,6 @@ install_maven
 # persist all environment variables 
 # nos_persist_evars
 
-# create database_url environment variable
-create_database_url
-
 # run maven process resources
 maven_process_resources
 

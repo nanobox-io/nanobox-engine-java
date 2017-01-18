@@ -93,9 +93,3 @@ publish_release() {
   nos_print_bullet "Moving build into live code directory..."
   rsync -a $(nos_code_dir)/ $(nos_app_dir)
 }
-
-create_database_url() {
-  if [[ -n "$(nos_payload 'env_POSTGRESQL1_HOST')" ]]; then
-    nos_persist_evar "DATABASE_URL" "postgres://$(nos_payload 'env_POSTGRESQL1_USER'):$(nos_payload 'env_POSTGRESQL1_PASS')@$(nos_payload 'env_POSTGRESQL1_HOST'):$(nos_payload 'env_POSTGRESQL1_PORT')/$(nos_payload 'env_POSTGRESQL1_NAME')"
-  fi
-}
