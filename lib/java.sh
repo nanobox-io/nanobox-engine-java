@@ -34,6 +34,18 @@ java_home() {
   esac
 }
 
+java_env() {
+  if [[ ! -f "$(nos_etc_dir)/env.d/JAVA_HOME" ]]; then
+    echo "$(java_home)" > "$(nos_etc_dir)/env.d/JAVA_HOME"
+  fi
+  if [[ ! -f "$(nos_etc_dir)/env.d/JAVA_OPTS" ]]; then
+    echo "-XX:+UseCompressedOops" > "$(nos_etc_dir)/env.d/JAVA_OPTS"
+  fi
+  if [[ ! -f "$(nos_etc_dir)/env.d/PORT" ]]; then
+    echo "8080" > "$(nos_etc_dir)/env.d/PORT"
+  fi
+}
+
 install_runtime() {
   pkgs=($(runtime))
 

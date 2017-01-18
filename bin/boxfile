@@ -20,9 +20,3 @@ if [[ $(grep -c build_triggers /opt/nanobox/hooks/lib/boxfile.rb) -gt 1 ]]; then
 	    - pom.xml
 	END
 fi
-cat <<-END
-env:
-  JAVA_HOME: $(java_home)
-  JAVA_OPTS: "-XX:+UseCompressedOops"
-  PORT: 8080
-END

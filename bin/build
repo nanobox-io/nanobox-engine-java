@@ -16,6 +16,9 @@ nos_print_process_start "Installing packages"
 # install sun*_java or openjdk*
 install_runtime
 
+# set up some environment variables
+java_env
+
 # install maven binary
 install_maven
 
