@@ -114,4 +114,4 @@ run.config:
 ---
 
 ## Help & Support
-This is a Java engine provided by [Nanobox](http://nanobox.io). If you need help with this engine, you can reach out to us in the [#nanobox IRC channel](http://webchat.freenode.net/?channels=nanobox). If you are running into an issue with the engine, feel free to [create a new issue on this project](https://github.com/nanobox-io/nanobox-engine-java/issues/new).
+This is a Java engine provided by [Nanobox](http://nanobox.io). If you need help with this engine, you can reach out to us in the [Nanobox Slack channel](https://nanoboxio.slack.com) (access can be requested at [slack.nanoapp.io](http://slack.nanoapp.io)). If you are running into an issue with the engine, feel free to [create a new issue on this project](https://github.com/nanobox-io/nanobox-engine-java/issues/new).
