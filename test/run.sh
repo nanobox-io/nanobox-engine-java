@@ -56,6 +56,7 @@ docker run \
   --volume=/tmp/cache:/tmp/cache \
   --volume=/tmp/pkgsrc:/data/var/db/pkgin/cache \
   --volume=/tmp/tmp:/var/log/out \
+  --rm \
   nanobox/build \
   /test/util/bats/bin/bats \
     /test/tests/${file} \

@@ -20,5 +20,6 @@ docker run \
   --volume=/home/vagrant/ssh:/home/gonano/.ssh \
   --volume=/tmp/cache:/tmp/cache \
   --volume=/tmp/pkgsrc:/data/var/db/pkgin/cache \
+  --rm \
   nanobox/build \
   /bin/bash
