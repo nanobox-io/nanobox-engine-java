@@ -95,18 +95,16 @@ is_gradle() {
 }
 
 gradle_version() {
-  version="$(nos_validate "$(nos_payload "config_gradle_version")" "string" "")"
-  echo ${version//./}
+  echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "")
 }
 
 gradle_dist_type() {
-  dist="$(nos_validate "$(nos_payload "config_gradle_dist")" "string" "bin")"
-  echo $dist
+  echo $(nos_validate "$(nos_payload "config_gradle_dist")" "string" "bin")
 }
 
 install_gradle() {
   nos_install "unzip"
-  wget -q /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
+  wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
   unzip -o /tmp/gradle.zip -d /tmp
   rsync -a /tmp/gradle-$(gradle_version)/. /data/
 }
