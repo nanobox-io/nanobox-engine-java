@@ -105,12 +105,10 @@ gradle_dist_type() {
 }
 
 install_gradle() {
-  if [[ -n "$(nos_payload 'config_gradle_version')" ]]; then
-    nos_install "unzip"
-    wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
-    unzip -o /tmp/gradle.zip -d /tmp
-    rsync -a /tmp/gradle-$(gradle_version)/. /data/
-  fi
+  nos_install "unzip"
+  wget -q /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
+  unzip -o /tmp/gradle.zip -d /tmp
+  rsync -a /tmp/gradle-$(gradle_version)/. /data/
 }
 
 gradle_build() {
