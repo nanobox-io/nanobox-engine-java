@@ -54,7 +54,6 @@ install_runtime() {
 
 # Uninstall build dependencies
 uninstall_build_packages() {
-  # currently ruby doesn't install any build-only deps... I think
   pkgs=()
 
   # if pkgs isn't empty, let's uninstall what we don't need
@@ -63,6 +62,9 @@ uninstall_build_packages() {
   fi
 }
 
+is_maven() {
+  [ -n "$(nos_payload 'config_maven_version')" ]
+}
 maven_default_version() {
   [[ "$(runtime)" = 'sun-jdk6' ]] && echo '3.2' || echo '3.3'
 }
@@ -86,6 +88,33 @@ maven_process_resources() {
 
 maven_install() {
   (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
+}
+
+is_gradle() {
+  [ -n "$(nos_payload 'config_gradle_version')" ]
+}
+
+gradle_version() {
+  version="$(nos_validate "$(nos_payload "config_gradle_version")" "string" "")"
+  echo ${version//./}
+}
+
+gradle_dist_type() {
+  dist="$(nos_validate "$(nos_payload "config_gradle_dist")" "string" "bin")"
+  echo $dist
+}
+
+install_gradle() {
+  if [[ -n "$(nos_payload 'config_gradle_version')" ]]; then
+    nos_install "unzip"
+    wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
+    unzip -o /tmp/gradle.zip -d /tmp
+    rsync -a /tmp/gradle-$(gradle_version)/. /data/
+  fi
+}
+
+gradle_build() {
+  (cd $(nos_code_dir); nos_run_process "gradle build" "gradle build")
 }
 
 # Copy the code into the live directory which will be used to run the app
