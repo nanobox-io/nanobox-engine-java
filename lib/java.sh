@@ -98,13 +98,9 @@ gradle_version() {
   echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "")
 }
 
-gradle_dist_type() {
-  echo $(nos_validate "$(nos_payload "config_gradle_dist")" "string" "bin")
-}
-
 download_gradle() {
   nos_install "unzip"
-  wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
+  wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip
   unzip -o /tmp/gradle.zip -d /tmp
   rsync -a /tmp/gradle-$(gradle_version)/. /data/
 }
