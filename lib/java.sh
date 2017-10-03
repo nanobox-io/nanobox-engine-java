@@ -94,11 +94,19 @@ is_gradle() {
   [ -n "$(nos_payload 'config_gradle_version')" ]
 }
 
+check_gradle_version() {
+  if [[ -z "$(wget -S --spider https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip 2>&1 | grep 'HTTP/1.1 200 OK')" ]]; then
+    nos_print_fatal "Invalid Gradle Version"  "$(gradle_version) is not a valid Gradle version. Please check  https://gradle.org/releases/ for valid versions."
+    exit 1
+  fi
+}
+
 gradle_version() {
   echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "")
 }
 
 download_gradle() {
+  check_gradle_version
   nos_install "unzip"
   wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip
   unzip -o /tmp/gradle.zip -d /tmp
