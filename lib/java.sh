@@ -109,7 +109,7 @@ download_gradle() {
   check_gradle_version
   nos_install "unzip"
   wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip
-  unzip -o /tmp/gradle.zip -d /tmp
+  unzip -qo /tmp/gradle.zip -d /tmp
   rsync -a /tmp/gradle-$(gradle_version)/. /data/
 }
 
