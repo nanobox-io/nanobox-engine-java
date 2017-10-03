@@ -25,10 +25,13 @@ This engine exposes configuration options through the [boxfile.yml](http://docs.
 run.config:
   engine.config:
     # Java Settings
-    runtime: openjdk8
+    runtime: oracle-jdk8
 
     # Maven Settings
-    maven_version: 3.3
+    maven_version: '3.3'
+    
+    # Gradle Settings
+    gradle_version: '4.2'
 
     # Node.js Settings
     nodejs_runtime: nodejs-4.4
@@ -37,6 +40,7 @@ run.config:
 ##### Quick Links
 [Java Settings](#java-settings)  
 [Maven Settings](#maven-settings)  
+[Gradle Settings](#maven-settings)  
 [Node.js Settings](#node-js-settings)
 
 ---
@@ -50,8 +54,8 @@ The following setting allows you to define your Java runtime environment.
 Specifies which Java runtime and version to use. The following runtimes are available:
 
 - openjdk7
-- openjdk8 *(default)*
-- oraclejdk8
+- openjdk8
+- oraclejdk8 *(default)*
 - sun-jdk6
 - sun-jdk7
 - sun-jdk8
@@ -92,7 +96,24 @@ Defines which version of Maven to use. Available versions depend on which versio
 ```yaml
 run.config:
   engine.config:
-    maven_version: 3.3
+    maven_version: '3.3'
+```
+
+---
+
+### Gradle Settings
+
+If you want to use the [Gradle](https://gradle.org) build tool, you can configure which version you want to use.
+The following settings are valid:
+
+#### gradle_version
+
+Defines which version of Gradle to use from the [distribution list](services.gradle.org/distributions/).
+
+```yaml
+run.config:
+  engine.config:
+    gradle_version: '4.2'
 ```
 
 ---
