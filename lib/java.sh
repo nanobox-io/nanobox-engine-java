@@ -79,15 +79,15 @@ maven_runtime() {
 }
 
 install_maven() {
-  nos_install "$(maven_runtime)"
+  is_maven && nos_install "$(maven_runtime)"
 }
 
 maven_process_resources() {
-  (cd $(nos_code_dir); nos_run_process "maven process-resources" "mvn -T 4.0C -B -DskipTests=true clean process-resources")
+  is_maven && (cd $(nos_code_dir); nos_run_process "maven process-resources" "mvn -T 4.0C -B -DskipTests=true clean process-resources")
 }
 
 maven_install() {
-  (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
+  is_maven && (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
 }
 
 is_gradle() {
@@ -102,15 +102,19 @@ gradle_dist_type() {
   echo $(nos_validate "$(nos_payload "config_gradle_dist")" "string" "bin")
 }
 
-install_gradle() {
+download_gradle() {
   nos_install "unzip"
   wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-$(gradle_dist_type).zip
   unzip -o /tmp/gradle.zip -d /tmp
   rsync -a /tmp/gradle-$(gradle_version)/. /data/
 }
 
+install_gradle() {
+  is_gradle && download_gradle
+}
+
 gradle_build() {
-  (cd $(nos_code_dir); nos_run_process "gradle build" "gradle build")
+  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "gradle build")
 }
 
 # Copy the code into the live directory which will be used to run the app

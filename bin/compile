@@ -11,6 +11,6 @@ nos_init "$@"
 # source common lib
 . ${engine_lib_dir}/java.sh
 
-is_maven && maven_install
+maven_install
 
-is_gradle && gradle_build
+gradle_build

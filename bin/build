@@ -20,10 +20,10 @@ install_runtime
 java_env
 
 # install maven binary
-is_maven && install_maven
+install_maven
 
 # install gradle binary
-is_gradle && install_gradle
+install_gradle
 
 # persist all environment variables 
 # nos_persist_evars
@@ -32,6 +32,6 @@ is_gradle && install_gradle
 create_database_url
 
 # run maven process resources
-is_maven && maven_process_resources
+maven_process_resources
 
 exit 0
