@@ -120,7 +120,7 @@ setup() {
   # curl the index
   run curl -s 127.0.0.1:4567/hello 2>/dev/null
 
-  expected="Hello World!"
+  expected="Hello World"
 
   # kill the server
   kill -9 $pid > /dev/null 2>&1
