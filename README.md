@@ -13,7 +13,11 @@ run.config:
 ## Build Process
 When [running a build](https://docs.nanboox.io/cli/build/), this engine compiles code by doing the following:
 
+Maven:
 - `mvn -B -DskipTests=true clean install`
+
+Gradle (you can customize with the `gradle_build` option in the [gradle settings](#gradle_build) ):
+- `gradle build`
 
 ## Basic Configuration Options
 This engine exposes configuration options through the [boxfile.yml](http://docs.nanobox.io/app-config/boxfile/), a yaml config file used to provision and configure your app's infrastructure when using Nanobox.
