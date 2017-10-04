@@ -117,8 +117,12 @@ install_gradle() {
   is_gradle && download_gradle
 }
 
+gradle_config_build() {
+  echo $(nos_validate "$(nos_payload "config_gradle_build")" "string" "gradle build")
+}
+
 gradle_build() {
-  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "gradle build")
+  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "$(gradle_config_build)")
 }
 
 # Copy the code into the live directory which will be used to run the app

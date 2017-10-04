@@ -116,6 +116,18 @@ run.config:
     gradle_version: '4.2'
 ```
 
+#### gradle_build
+
+Define a custom build command. Useful if you need to do something other than the default `gradle build` like `gradle shadowJar`.
+
+```yaml
+run.config:
+  engine.config:
+    gradle_version: '4.2'
+    gradle_build: 'gradle shadowJar'
+```
+
+
 ---
 
 ### Node.js Settings
