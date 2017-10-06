@@ -16,7 +16,7 @@ When [running a build](https://docs.nanboox.io/cli/build/), this engine compiles
 Maven:
 - `mvn -B -DskipTests=true clean install`
 
-Gradle (you can customize with the `gradle_build` option in the [gradle settings](#gradle_build) ):
+Gradle (you can customize with the `gradle_build` option in the [gradle settings](#gradle_settings)):
 - `gradle build`
 
 ## Basic Configuration Options
@@ -59,7 +59,7 @@ Specifies which Java runtime and version to use. The following runtimes are avai
 
 - openjdk7
 - openjdk8
-- oraclejdk8 *(default)*
+- oracle-jdk8 *(default)*
 - sun-jdk6
 - sun-jdk7
 - sun-jdk8
