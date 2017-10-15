@@ -44,7 +44,7 @@ run.config:
 ##### Quick Links
 [Java Settings](#java-settings)  
 [Maven Settings](#maven-settings)  
-[Gradle Settings](#maven-settings)  
+[Gradle Settings](#gradle-settings)  
 [Node.js Settings](#node-js-settings)
 
 ---
@@ -102,6 +102,16 @@ run.config:
   engine.config:
     maven_version: '3.3'
 ```
+#### compile 
+
+Define a custom build command. Useful if you need to do something other than the default `mvn -T 4.0C -B -DskipTests=true clean install` like `mvn package`.
+
+```yaml
+run.config:
+  engine.config:
+    maven_version: '3.3'
+    compile: 'mvn clean package'
+```
 
 ---
 
@@ -120,7 +130,7 @@ run.config:
     gradle_version: '4.2'
 ```
 
-#### gradle_build
+#### compile 
 
 Define a custom build command. Useful if you need to do something other than the default `gradle build` like `gradle shadowJar`.
 
@@ -128,7 +138,7 @@ Define a custom build command. Useful if you need to do something other than the
 run.config:
   engine.config:
     gradle_version: '4.2'
-    gradle_build: 'gradle shadowJar'
+    compile: 'gradle shadowJar'
 ```
 
 

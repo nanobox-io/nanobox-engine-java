@@ -62,8 +62,12 @@ uninstall_build_packages() {
   fi
 }
 
+has_pom_file() {
+  [ -f "$(nos_code_dir)/pom.xml" ]
+}
+
 is_maven() {
-  [ -n "$(nos_payload 'config_maven_version')" ]
+  [ -n "$(nos_payload 'config_maven_version')" ] || has_pom_file
 }
 maven_default_version() {
   [[ "$(runtime)" = 'sun-jdk6' ]] && echo '3.2' || echo '3.3'
@@ -87,11 +91,14 @@ maven_process_resources() {
 }
 
 maven_install() {
-  is_maven && (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
+  is_maven && (cd $(nos_code_dir); nos_run_process "maven install" "$(nos_validate "$(nos_payload "config_compile")" "string" "mvn -T 4.0C -B -DskipTests=true clean install")")
 }
 
+has_build_gradle_file() {
+  [ -f "$(nos_code_dir)/build.gradle" ]
+}
 is_gradle() {
-  [ -n "$(nos_payload 'config_gradle_version')" ]
+  [ -n "$(nos_payload "config_gradle_version")" ] || has_build_gradle_file
 }
 
 check_gradle_version() {
@@ -102,7 +109,7 @@ check_gradle_version() {
 }
 
 gradle_version() {
-  echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "")
+  echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "4.2")
 }
 
 download_gradle() {
@@ -117,12 +124,12 @@ install_gradle() {
   is_gradle && download_gradle
 }
 
-gradle_config_build() {
-  echo $(nos_validate "$(nos_payload "config_gradle_build")" "string" "gradle build")
+gradle_compile() {
+  echo $(nos_validate "$(nos_payload "config_compile")" "string" "gradle build")
 }
 
 gradle_build() {
-  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "$(gradle_config_build)")
+  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "$(gradle_compile)")
 }
 
 # Copy the code into the live directory which will be used to run the app

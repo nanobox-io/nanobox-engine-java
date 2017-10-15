@@ -14,7 +14,7 @@ payload() {
   "env_dir": "/data/etc/env.d",
   "config": {
      "gradle_version": "4.2",
-     "gradle_build": "gradle shadowJar"
+     "compile": "gradle shadowJar"
    }
 }
 END
