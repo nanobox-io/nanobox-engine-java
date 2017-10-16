@@ -13,10 +13,10 @@ run.config:
 ## Build Process
 When [running a build](https://docs.nanboox.io/cli/build/), this engine compiles code by doing the following:
 
-Maven:
+Maven (you can customize with the `compile` option in the [maven_settings](#maven_settings):
 - `mvn -B -DskipTests=true clean install`
 
-Gradle (you can customize with the `gradle_build` option in the [gradle settings](#gradle_settings)):
+Gradle (you can customize with the `compile` option in the [gradle settings](#gradle_settings)):
 - `gradle build`
 
 ## Basic Configuration Options
