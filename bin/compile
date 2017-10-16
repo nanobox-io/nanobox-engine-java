@@ -12,3 +12,5 @@ nos_init "$@"
 . ${engine_lib_dir}/java.sh
 
 maven_install
+
+gradle_build

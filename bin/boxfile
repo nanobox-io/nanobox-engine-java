@@ -18,5 +18,6 @@ if [[ $(grep -c build_triggers /opt/nanobox/hooks/lib/boxfile.rb) -gt 1 ]]; then
 	run.config:
 	  build_triggers:
 	    - pom.xml
+	    - build.gradle
 	END
 fi

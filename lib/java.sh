@@ -54,7 +54,6 @@ install_runtime() {
 
 # Uninstall build dependencies
 uninstall_build_packages() {
-  # currently ruby doesn't install any build-only deps... I think
   pkgs=()
 
   # if pkgs isn't empty, let's uninstall what we don't need
@@ -63,6 +62,13 @@ uninstall_build_packages() {
   fi
 }
 
+has_pom_file() {
+  [ -f "$(nos_code_dir)/pom.xml" ]
+}
+
+is_maven() {
+  [ -n "$(nos_payload 'config_maven_version')" ] || has_pom_file
+}
 maven_default_version() {
   [[ "$(runtime)" = 'sun-jdk6' ]] && echo '3.2' || echo '3.3'
 }
@@ -77,15 +83,53 @@ maven_runtime() {
 }
 
 install_maven() {
-  nos_install "$(maven_runtime)"
+  is_maven && nos_install "$(maven_runtime)"
 }
 
 maven_process_resources() {
-  (cd $(nos_code_dir); nos_run_process "maven process-resources" "mvn -T 4.0C -B -DskipTests=true clean process-resources")
+  is_maven && (cd $(nos_code_dir); nos_run_process "maven process-resources" "mvn -T 4.0C -B -DskipTests=true clean process-resources")
 }
 
 maven_install() {
-  (cd $(nos_code_dir); nos_run_process "maven install" "mvn -T 4.0C -B -DskipTests=true clean install")
+  is_maven && (cd $(nos_code_dir); nos_run_process "maven install" "$(nos_validate "$(nos_payload "config_compile")" "string" "mvn -T 4.0C -B -DskipTests=true clean install")")
+}
+
+has_build_gradle_file() {
+  [ -f "$(nos_code_dir)/build.gradle" ]
+}
+is_gradle() {
+  [ -n "$(nos_payload "config_gradle_version")" ] || has_build_gradle_file
+}
+
+check_gradle_version() {
+  if [[ -z "$(wget -S --spider https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip 2>&1 | grep 'HTTP/1.1 200 OK')" ]]; then
+    nos_print_fatal "Invalid Gradle Version"  "$(gradle_version) is not a valid Gradle version. Please check  https://gradle.org/releases/ for valid versions."
+    exit 1
+  fi
+}
+
+gradle_version() {
+  echo $(nos_validate "$(nos_payload "config_gradle_version")" "string" "4.2")
+}
+
+download_gradle() {
+  check_gradle_version
+  nos_install "unzip"
+  wget -qO /tmp/gradle.zip https://services.gradle.org/distributions/gradle-$(gradle_version)-bin.zip
+  unzip -qo /tmp/gradle.zip -d /tmp
+  rsync -a /tmp/gradle-$(gradle_version)/. /data/
+}
+
+install_gradle() {
+  is_gradle && download_gradle
+}
+
+gradle_compile() {
+  echo $(nos_validate "$(nos_payload "config_compile")" "string" "gradle build")
+}
+
+gradle_build() {
+  is_gradle && (cd $(nos_code_dir); nos_run_process "gradle build" "$(gradle_compile)")
 }
 
 # Copy the code into the live directory which will be used to run the app

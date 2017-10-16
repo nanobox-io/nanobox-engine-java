@@ -22,6 +22,9 @@ java_env
 # install maven binary
 install_maven
 
+# install gradle binary
+install_gradle
+
 # persist all environment variables 
 # nos_persist_evars
 

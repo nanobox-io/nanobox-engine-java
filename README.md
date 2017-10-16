@@ -13,7 +13,11 @@ run.config:
 ## Build Process
 When [running a build](https://docs.nanboox.io/cli/build/), this engine compiles code by doing the following:
 
+Maven (you can customize with the `compile` option in the [maven_settings](#maven_settings):
 - `mvn -B -DskipTests=true clean install`
+
+Gradle (you can customize with the `compile` option in the [gradle settings](#gradle_settings)):
+- `gradle build`
 
 ## Basic Configuration Options
 This engine exposes configuration options through the [boxfile.yml](http://docs.nanobox.io/app-config/boxfile/), a yaml config file used to provision and configure your app's infrastructure when using Nanobox.
@@ -25,10 +29,13 @@ This engine exposes configuration options through the [boxfile.yml](http://docs.
 run.config:
   engine.config:
     # Java Settings
-    runtime: openjdk8
+    runtime: oracle-jdk8
 
     # Maven Settings
-    maven_version: 3.3
+    maven_version: '3.3'
+    
+    # Gradle Settings
+    gradle_version: '4.2'
 
     # Node.js Settings
     nodejs_runtime: nodejs-4.4
@@ -37,6 +44,7 @@ run.config:
 ##### Quick Links
 [Java Settings](#java-settings)  
 [Maven Settings](#maven-settings)  
+[Gradle Settings](#gradle-settings)  
 [Node.js Settings](#node-js-settings)
 
 ---
@@ -50,8 +58,8 @@ The following setting allows you to define your Java runtime environment.
 Specifies which Java runtime and version to use. The following runtimes are available:
 
 - openjdk7
-- openjdk8 *(default)*
-- oraclejdk8
+- openjdk8
+- oracle-jdk8 *(default)*
 - sun-jdk6
 - sun-jdk7
 - sun-jdk8
@@ -92,8 +100,47 @@ Defines which version of Maven to use. Available versions depend on which versio
 ```yaml
 run.config:
   engine.config:
-    maven_version: 3.3
+    maven_version: '3.3'
 ```
+#### compile 
+
+Define a custom build command. Useful if you need to do something other than the default `mvn -T 4.0C -B -DskipTests=true clean install` like `mvn package`.
+
+```yaml
+run.config:
+  engine.config:
+    maven_version: '3.3'
+    compile: 'mvn clean package'
+```
+
+---
+
+### Gradle Settings
+
+If you want to use the [Gradle](https://gradle.org) build tool, you can configure which version you want to use.
+The following settings are valid:
+
+#### gradle_version
+
+Defines which version of Gradle to use from the [distribution list](services.gradle.org/distributions/).
+
+```yaml
+run.config:
+  engine.config:
+    gradle_version: '4.2'
+```
+
+#### compile 
+
+Define a custom build command. Useful if you need to do something other than the default `gradle build` like `gradle shadowJar`.
+
+```yaml
+run.config:
+  engine.config:
+    gradle_version: '4.2'
+    compile: 'gradle shadowJar'
+```
+
 
 ---
 

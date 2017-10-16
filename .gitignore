@@ -1,1 +1,4 @@
 .vagrant
+test/apps/**/build/
+test/apps/**/.gradle/
+.idea/
